@@ -1,31 +1,28 @@
 require('./config/config');
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+
+//
 const app = express();
 const port = process.env.PORT;
 
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
-
-// parse application/json
-app.use(bodyParser.json())
-
-
-app.get('/', function(req, res) {
-    res.send('Hello World');
+    // parse application/json
+app.use(bodyParser.json());
+//
+app.use(require('./routes/usuario'));
+//database
+mongoose.connect(process.env.URL_DB, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
 });
-
-app.post('/usuario', function(req, res) {
-    let body = req.body;
-    res.json(body);
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+    console.log(`-> DATABASE connected!`);
 });
-
-app.put('/usuario', function(req, res) {
-    res.send('Got a PUT request at /user')
-});
-
-app.delete('/usuario', function(req, res) {
-    res.send('Got a DELETE request at /user')
-});
-app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
+app.listen(port, () => console.log(`-> SERVIDOR: app listening at http://localhost:${port}`));
