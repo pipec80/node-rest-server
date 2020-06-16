@@ -1,13 +1,9 @@
 //puerto
-
 process.env.PORT = process.env.PORT || 3000;
-
 //=============================
 // entorno
 //=============================
-
 process.env.NODE_ENV = process.env.NODE_ENV || 'dev';
-
 //=============================
 // token
 //=============================
@@ -23,5 +19,8 @@ if (process.env.NODE_ENV === 'dev') {
 } else {
     urlDB = process.env.MONGO_URI;
 }
-
 process.env.URL_DB = urlDB;
+//=============================
+// entorno
+//=============================
+process.env.CLIENT_ID = '429484324105-f5pveebdf4aiua5pp8ica5pv2nvm8tjb.apps.googleusercontent.com';
