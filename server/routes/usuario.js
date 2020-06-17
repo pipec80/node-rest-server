@@ -7,7 +7,7 @@ const { verificaToken, verificaRol } = require('../middleware/autenticacion');
 //
 const app = express();
 //
-app.get('/usuario', [verificaToken, verificaRol], (req, res) => {
+app.get('/usuario', verificaToken, (req, res) => {
     let desde = req.query.desde || 0;
     desde = Number(desde);
     let limite = req.query.limite || 5;
@@ -24,7 +24,6 @@ app.get('/usuario', [verificaToken, verificaRol], (req, res) => {
                     err
                 });
             }
-
             Usuario.countDocuments({ estado: true }, (err, conteo) => {
                 res.json({
                     ok: true,
@@ -32,12 +31,10 @@ app.get('/usuario', [verificaToken, verificaRol], (req, res) => {
                     total: conteo
                 });
             });
-
-
         });
 });
-
-app.post('/usuario', verificaToken, function(req, res) {
+//
+app.post('/usuario', [verificaToken, verificaAdmin_Role], function(req, res) {
     let body = req.body;
     let usuario = new Usuario({
         nombre: body.nombre,
@@ -64,8 +61,8 @@ app.post('/usuario', verificaToken, function(req, res) {
         });
     });
 });
-
-app.put('/usuario/:id', verificaToken, function(req, res) {
+//
+app.put('/usuario/:id', [verificaToken, verificaAdmin_Role], function(req, res) {
     let body = _.pick(req.body, ['nombre', 'email', 'img', 'role', 'estado', ]);
     let id = req.params.id;
     Usuario.findByIdAndUpdate(id, body, { new: true, runValidators: true }, (err, usuarioDb) => {
@@ -84,12 +81,10 @@ app.put('/usuario/:id', verificaToken, function(req, res) {
         });
     });
 });
-
-app.delete('/usuario/:id', verificaToken, function(req, res) {
+//
+app.delete('/usuario/:id', [verificaToken, verificaAdmin_Role], function(req, res) {
     let id = req.params.id;
-
     let cambiaEstado = { estado: false };
-
     //Usuario.findByIdAndRemove(id, (err, usarioBorrado) => {
     Usuario.findByIdAndUpdate(id, cambiaEstado, { new: true }, (err, usarioBorrado) => {
         //errro db
@@ -115,6 +110,5 @@ app.delete('/usuario/:id', verificaToken, function(req, res) {
         });
     });
 });
-
-
+//
 module.exports = app;
