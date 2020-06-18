@@ -1,4 +1,4 @@
 node_modules/
-tmp/*
-upload/productos/*
-upload/usuarios/*
+/tmp/*
+/upload/productos/*
+/upload/usuarios/*
