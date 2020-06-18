@@ -4,6 +4,15 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
 //
+/**
+ * notas
+ * https://www.npmjs.com/package/morgan
+ * var favicon = require('static-favicon');
+ * var logger = require('morgan');
+ * var cookieParser = require('cookie-parser');
+ * cors = require('cors');
+ * 
+ */
 const app = express();
 const port = process.env.PORT;
 
